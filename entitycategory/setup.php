@@ -1,17 +1,17 @@
 <?php
 
 // Version of the plugin
-define('PLUGIN_GROUPCATEGORY_VERSION', "1.4.0RC3");
-define('PLUGIN_GROUPCATEGORY_GLPI_MIN_VERSION', '9.4');
-define('PLUGIN_GROUPCATEGORY_NAMESPACE', 'groupcategory');
+define('PLUGIN_ENTITYCATEGORY_VERSION', "1.4.0RC3");
+define('PLUGIN_ENTITYCATEGORY_GLPI_MIN_VERSION', '9.4');
+define('PLUGIN_ENTITYCATEGORY_NAMESPACE', 'entitycategory');
 // Maximum GLPI version, exclusive
-define("PLUGIN_GROUPCATEGORY_GLPI_MAX_VERSION", "9.6");
+define("PLUGIN_ENTITYCATEGORY_GLPI_MAX_VERSION", "9.6");
 
-if (!defined("PLUGIN_GROUPCATEGORY_DIR")) {
-    define("PLUGIN_GROUPCATEGORY_DIR", Plugin::getPhpDir("groupcategory"));
+if (!defined("PLUGIN_ENTITYCATEGORY_DIR")) {
+    define("PLUGIN_ENTITYCATEGORY_DIR", Plugin::getPhpDir("entitycategory"));
 }
-if (!defined("PLUGIN_GROUPCATEGORY_WEB_DIR")) {
-    define("PLUGIN_GROUPCATEGORY_WEB_DIR", Plugin::getWebDir("groupcategory"));
+if (!defined("PLUGIN_ENTITYCATEGORY_WEB_DIR")) {
+    define("PLUGIN_ENTITYCATEGORY_WEB_DIR", Plugin::getWebDir("entitycategory"));
 }
 
 
@@ -20,15 +20,15 @@ if (!defined("PLUGIN_GROUPCATEGORY_WEB_DIR")) {
  *
  * @return boolean
  */
-function plugin_version_groupcategory()
+function plugin_version_entitycategory()
 {
     return [
-      'name' => 'GroupCategory',
-      'version' => PLUGIN_GROUPCATEGORY_VERSION,
+      'name' => 'EntityCategory',
+      'version' => PLUGIN_ENTITYCATEGORY_VERSION,
       'author' => '<a href="https://www.probesys.com">PROBESYS</a>',
-      'homepage' => 'https://github.com/Probesys/glpi-plugins-groupcategory',
+      'homepage' => 'https://github.com/Probesys/glpi-plugins-entitycategory',
       'license' => 'GPLv2+',
-      'minGlpiVersion' => PLUGIN_GROUPCATEGORY_GLPI_MIN_VERSION,
+      'minGlpiVersion' => PLUGIN_ENTITYCATEGORY_GLPI_MIN_VERSION,
     ];
 }
 
@@ -37,16 +37,16 @@ function plugin_version_groupcategory()
  *
  * @return boolean
  */
-function plugin_init_groupcategory()
+function plugin_init_entitycategory()
 {
     if (Session::getLoginUserID()) {
         global $PLUGIN_HOOKS;
 
-        $PLUGIN_HOOKS['csrf_compliant'][PLUGIN_GROUPCATEGORY_NAMESPACE] = true;
-        //$PLUGIN_HOOKS['post_show_item'][PLUGIN_GROUPCATEGORY_NAMESPACE] = ['PluginGroupcategoryGroupcategory', 'post_show_item'];
-        $PLUGIN_HOOKS['post_item_form'][PLUGIN_GROUPCATEGORY_NAMESPACE] = ['PluginGroupcategoryGroupcategory', 'post_item_form'];
-        $PLUGIN_HOOKS['pre_item_update'][PLUGIN_GROUPCATEGORY_NAMESPACE] = [
-          'Group' => 'plugin_groupcategory_group_update',
+        $PLUGIN_HOOKS['csrf_compliant'][PLUGIN_ENTITYCATEGORY_NAMESPACE] = true;
+        //$PLUGIN_HOOKS['post_show_item'][PLUGIN_ENTITYCATEGORY_NAMESPACE] = ['PluginEntitycategoryEntitycategory', 'post_show_item'];
+        $PLUGIN_HOOKS['post_item_form'][PLUGIN_ENTITYCATEGORY_NAMESPACE] = ['PluginEntitycategoryEntitycategory', 'post_item_form'];
+        $PLUGIN_HOOKS['pre_item_update'][PLUGIN_ENTITYCATEGORY_NAMESPACE] = [
+          'Entity' => 'plugin_entitycategory_entity_update',
         ];
     }
 }
@@ -54,10 +54,10 @@ function plugin_init_groupcategory()
 /**
  * Check plugin's prerequisites before installation
  */
-function plugin_groupcategory_check_prerequisites()
+function plugin_entitycategory_check_prerequisites()
 {
-    if (version_compare(GLPI_VERSION, PLUGIN_GROUPCATEGORY_GLPI_MIN_VERSION, 'lt') || version_compare(GLPI_VERSION, PLUGIN_GROUPCATEGORY_GLPI_MAX_VERSION, 'ge')) {
-        echo __('This plugin requires GLPI >= ' . PLUGIN_GROUPCATEGORY_GLPI_MIN_VERSION . ' and GLPI < ' . PLUGIN_GROUPCATEGORY_GLPI_MAX_VERSION . '<br>');
+    if (version_compare(GLPI_VERSION, PLUGIN_ENTITYCATEGORY_GLPI_MIN_VERSION, 'lt') || version_compare(GLPI_VERSION, PLUGIN_ENTITYCATEGORY_GLPI_MAX_VERSION, 'ge')) {
+        echo __('This plugin requires GLPI >= ' . PLUGIN_ENTITYCATEGORY_GLPI_MIN_VERSION . ' and GLPI < ' . PLUGIN_ENTITYCATEGORY_GLPI_MAX_VERSION . '<br>');
     } else {
         return true;
     }
@@ -69,7 +69,7 @@ function plugin_groupcategory_check_prerequisites()
  *
  * @return boolean
  */
-function plugin_groupcategory_check_config()
+function plugin_entitycategory_check_config()
 {
     // nothing to do
     return true;
