@@ -1,6 +1,6 @@
 <?php
 
-class PluginGroupcategoryGroupcategory extends CommonDBTM {
+class PluginEntitycategoryEntitycategory extends CommonDBTM {
 
     /**
      * All categories
@@ -14,27 +14,27 @@ class PluginGroupcategoryGroupcategory extends CommonDBTM {
      * @return array
      */
     public static function getAllCategories() {
-        if (empty(PluginGroupcategoryGroupcategory::$_all_categories)) {
+        if (empty(PluginEntitycategoryEntitycategory::$_all_categories)) {
             $category = new ITILCategory();
             $categories = $category->find([],"completename ASC, level ASC, id ASC");
 
             self::$_all_categories = $categories;
         }
 
-        return PluginGroupcategoryGroupcategory::$_all_categories;
+        return PluginEntitycategoryEntitycategory::$_all_categories;
     }
 
     /**
-     * Get the selected categories for a group
+     * Get the selected categories for a entity
      *
-     * @param  Group $group
+     * @param  Entity $entity
      * @return array
      */
-    public static function getSelectedCategoriesForGroup(Group $group) {
-        $group_category = new PluginGroupcategoryGroupcategory();
+    public static function getSelectedCategoriesForEntity(Entity $entity) {
+        $entity_category = new PluginEntitycategoryEntitycategory();
 
-        if ($group_category->getFromDBByCrit(["group_id" => $group->getId()])) {
-            $category_ids = explode(', ', $group_category->fields['category_ids']);
+        if ($entity_category->getFromDBByCrit(["entity_id" => $entity->getId()])) {
+            $category_ids = explode(', ', $entity_category->fields['category_ids']);
             $all_categories = self::getAllCategories();
             $selected_categories = [];
             foreach ($all_categories as $details) {
@@ -61,12 +61,12 @@ class PluginGroupcategoryGroupcategory extends CommonDBTM {
         $user = new User();
 
         if ($user->getFromDB($user_id)) {
-            $user_groups = Group_User::getUserGroups($user_id);
+            $user_entities = Entity_User::getUserEntities($user_id);
 
-            foreach ($user_groups as $group_data) {
-                $group = new Group();
-                if ($group->getFromDB($group_data['id'])) {
-                    $categories = self::getSelectedCategoriesForGroup($group);
+            foreach ($user_entities as $entity_data) {
+                $entity = new Entity();
+                if ($entity->getFromDB($entity_data['id'])) {
+                    $categories = self::getSelectedCategoriesForEntity($entity);
                     $user_categories += $categories;
                 }
             }
@@ -84,12 +84,12 @@ class PluginGroupcategoryGroupcategory extends CommonDBTM {
 
         if (!is_array($params['item'])) {
             switch ($params['item']->getType()) {
-                case 'Group':
-                    plugin_groupcategory_post_show_group($params['item']);
+                case 'Entity':
+                    plugin_entitycategory_post_show_entity($params['item']);
                     break;
 
                 case 'Ticket':
-                    plugin_groupcategory_post_show_ticket($params['item']);
+                    plugin_entitycategory_post_show_ticket($params['item']);
                     break;
                 default:
                 // nothing to do
@@ -103,12 +103,12 @@ class PluginGroupcategoryGroupcategory extends CommonDBTM {
     static function post_item_form($params) {
         if (!is_array($params['item'])) {
             switch ($params['item']->getType()) {
-                case 'Group':
-                    plugin_groupcategory_post_show_group($params['item']);
+                case 'Entity':
+                    plugin_entitycategory_post_show_entity($params['item']);
                     break;
 
                 case 'Ticket':                    
-                    plugin_groupcategory_post_show_ticket($params['item']);
+                    plugin_entitycategory_post_show_ticket($params['item']);
                     break;
                 default:
                 // nothing to do
